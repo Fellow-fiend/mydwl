@@ -23,8 +23,9 @@ static int log_level = WLR_ERROR;
 static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor */
 	/* examples: */
-	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
+	{ "firefox",  		NULL,       1 << 1,       0,           -1 }, /* Start on ONLY tag "2" */
+	{ "telegram-desktop",	NULL,       1 << 2,       0,           -1 }, /* Start on ONLY tag "3" */
+	{ "keepassxc",		NULL,       1 << 3,       0,           -1 }, /* Start on ONLY tag "4" */
 };
 
 /* layout(s) */
@@ -54,7 +55,8 @@ static const struct xkb_rule_names xkb_rules = {
 	/* example:
 	.options = "ctrl:nocaps",
 	*/
-	.options = NULL,
+	.layout = "us,ru",
+	.options = "ctrl:swapcaps,grp:toggle",
 };
 
 static const int repeat_rate = 25;
@@ -116,14 +118,16 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *termcmd[] = { "foot", NULL };
-static const char *menucmd[] = { "wmenu-run", NULL };
+static const char *termcmd[] = { "kitty", NULL };
+static const char *menucmd[] = { "bemenu-run", NULL };
 
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
 	/* modifier                  key                 function        argument */
 	{ MODKEY,                    XKB_KEY_p,          spawn,          {.v = menucmd} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     spawn,          {.v = termcmd} },
+	{ MODKEY,		     XKB_KEY_q,    	 spawn,          {.v = termcmd} },
+	{ MODKEY,		     XKB_KEY_z,    	 spawn,          SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +10%") },
+	{ MODKEY,		     XKB_KEY_x,    	 spawn,          SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -10%") },
 	{ MODKEY,                    XKB_KEY_j,          focusstack,     {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,          focusstack,     {.i = -1} },
 	{ MODKEY,                    XKB_KEY_i,          incnmaster,     {.i = +1} },
