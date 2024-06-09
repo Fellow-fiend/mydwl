@@ -20,6 +20,13 @@ static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You ca
 /* logging */
 static int log_level = WLR_ERROR;
 
+/* Autostart */
+static const char *const autostart[] = {
+    "mpvpaper", "*", "-f", "-o", "loop", "/home/fiend/media/wallpapers/ezgif-1-b087d0d036.gif", NULL,
+    "kitty", NULL, // terminal
+    NULL // terminate
+};
+
 static const Rule rules[] = {
     /* app_id             title       tags mask     isfloating   monitor */
     /* examples: */
