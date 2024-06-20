@@ -127,15 +127,21 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 /* commands */
 static const char *termcmd[] = { "kitty", NULL };
 static const char *menucmd[] = { "bemenu-run", NULL };
+static const char *browsercmd[] = { "firefox", NULL };
+
+static const Arg screenshot = SHCMD("grim -l 1 -g \"$(slurp)\" - | tee \"/home/fiend/media/screenshots/$(date +'%F_%T').png\" | wl-copy");
+static const Arg volumeup = SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +10%");
+static const Arg volumedown = SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -10%");
 
 static const Key keys[] = {
     /* Note that Shift changes certain key codes: c -> C, 2 -> at, etc. */
     /* modifier                  key                 function        argument */
     { MODKEY,                    XKB_KEY_p,             spawn,              {.v = menucmd} },
-    { MODKEY,            XKB_KEY_q,         spawn,              {.v = termcmd} },
-    { MODKEY,            XKB_KEY_z,         spawn,              SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -10%") },
-    { MODKEY,            XKB_KEY_x,         spawn,              SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +10%") },
-    { MODKEY,            XKB_KEY_s,         spawn,               SHCMD("grim -l 1 -g \"$(slurp)\" \"/home/fiend/media/screenshots/$(date +'%F_%T').png\"") },
+    { MODKEY,                    XKB_KEY_q,             spawn,              {.v = termcmd} },
+    { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_F,             spawn,              {.v = browsercmd} },
+    { MODKEY,                    XKB_KEY_z,             spawn,              volumedown },
+    { MODKEY,                    XKB_KEY_x,             spawn,              volumeup },
+    { MODKEY,                    XKB_KEY_s,             spawn,              screenshot },
     { MODKEY,                    XKB_KEY_j,             focusstack,         {.i = +1} },
     { MODKEY,                    XKB_KEY_k,             focusstack,         {.i = -1} },
     { MODKEY,                    XKB_KEY_i,             incnmaster,         {.i = +1} },
@@ -157,7 +163,7 @@ static const Key keys[] = {
     { MODKEY,                    XKB_KEY_bracketright,  focusmon,           {.i = WLR_DIRECTION_RIGHT} },
     { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_braceleft,     tagmon,             {.i = WLR_DIRECTION_LEFT} },
     { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_braceright,    tagmon,             {.i = WLR_DIRECTION_RIGHT} },
-    TAGKEYS(             XKB_KEY_1,         XKB_KEY_exclam,         0),
+    TAGKEYS(                 XKB_KEY_1,         XKB_KEY_exclam,         0),
     TAGKEYS(                 XKB_KEY_2,         XKB_KEY_at,             1),
     TAGKEYS(                 XKB_KEY_3,         XKB_KEY_numbersign,     2),
     TAGKEYS(                 XKB_KEY_4,         XKB_KEY_dollar,         3),
