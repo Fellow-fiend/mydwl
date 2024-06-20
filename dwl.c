@@ -287,6 +287,7 @@ static void focusclient(Client *c, int lift);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static Client *gettop(Monitor *m);
+static Client *getmasterornontile(Monitor *m);
 static void fullscreennotify(struct wl_listener *listener, void *data);
 static void handlesig(int signo);
 static void inputdevice(struct wl_listener *listener, void *data);
@@ -1454,6 +1455,21 @@ gettop(Monitor *m)
 {
     Client *c;
     wl_list_for_each(c, &fstack, flink) {
+        if (VISIBLEON(c, m))
+            return c;
+    }
+    return NULL;
+}
+
+Client *
+getmasterornontile(Monitor *m)
+{
+    Client *c;
+    wl_list_for_each(c, &fstack, flink) {
+        if (VISIBLEON(c, m) && (c->isfullscreen || c->isfloating))
+            return c;
+    }
+    wl_list_for_each(c, &clients, link) {
         if (VISIBLEON(c, m))
             return c;
     }
@@ -2911,7 +2927,7 @@ view(const Arg *arg)
     selmon->seltags ^= 1; /* toggle sel tagset */
     if (arg->ui & TAGMASK)
         selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
-    focusclient(focustop(selmon), 1);
+    focusclient(getmasterornontile(selmon), 1);
     arrange(selmon);
     printstatus();
 }
