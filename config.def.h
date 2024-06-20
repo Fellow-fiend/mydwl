@@ -144,8 +144,6 @@ static const Key keys[] = {
     { MODKEY,                    XKB_KEY_s,             spawn,              screenshot },
     { MODKEY,                    XKB_KEY_j,             focusstack,         {.i = +1} },
     { MODKEY,                    XKB_KEY_k,             focusstack,         {.i = -1} },
-    { MODKEY,                    XKB_KEY_i,             incnmaster,         {.i = +1} },
-    { MODKEY,                    XKB_KEY_d,             incnmaster,         {.i = -1} },
     { MODKEY,                    XKB_KEY_h,             setmfact,           {.f = -0.05f} },
     { MODKEY,                    XKB_KEY_l,             setmfact,           {.f = +0.05f} },
     { MODKEY,                    XKB_KEY_Return,        zoom,               {0} },

@@ -289,7 +289,6 @@ static void focusstack(const Arg *arg);
 static Client *gettop(Monitor *m);
 static void fullscreennotify(struct wl_listener *listener, void *data);
 static void handlesig(int signo);
-static void incnmaster(const Arg *arg);
 static void inputdevice(struct wl_listener *listener, void *data);
 static int keybinding(uint32_t mods, xkb_keysym_t sym);
 static void keypress(struct wl_listener *listener, void *data);
@@ -1502,15 +1501,6 @@ handlesig(int signo)
     } else if (signo == SIGINT || signo == SIGTERM) {
         quit(NULL);
     }
-}
-
-void
-incnmaster(const Arg *arg)
-{
-    if (!arg || !selmon)
-        return;
-    selmon->nmaster = MAX(selmon->nmaster + arg->i, 0);
-    arrange(selmon);
 }
 
 void
