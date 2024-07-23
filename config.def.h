@@ -30,9 +30,9 @@ static const char *const autostart[] = {
 static const Rule rules[] = {
     /* app_id             title       tags mask     isfloating   monitor */
     /* examples: */
-    { "firefox",        NULL,       1 << 1,       0,           -1 }, /* Start on ONLY tag "2" */
+    { "firefox",            NULL,       1 << 1,       0,           -1 }, /* Start on ONLY tag "2" */
     { "telegram-desktop",   NULL,       1 << 2,       0,           -1 }, /* Start on ONLY tag "3" */
-    { "keepassxc",      NULL,       1 << 3,       0,           -1 }, /* Start on ONLY tag "4" */
+    { "keepassxc",          NULL,       1 << 3,       0,           -1 }, /* Start on ONLY tag "4" */
 };
 
 /* layout(s) */
@@ -70,12 +70,12 @@ static const int repeat_rate = 25;
 static const int repeat_delay = 600;
 
 /* Trackpad */
-static const int tap_to_click = 1;
-static const int tap_and_drag = 1;
-static const int drag_lock = 1;
-static const int natural_scrolling = 0;
-static const int disable_while_typing = 1;
-static const int left_handed = 0;
+static const int tap_to_click            = 1;
+static const int tap_and_drag            = 1;
+static const int drag_lock               = 1;
+static const int natural_scrolling       = 0;
+static const int disable_while_typing    = 1;
+static const int left_handed             = 0;
 static const int middle_button_emulation = 0;
 /* You can choose between:
    LIBINPUT_CONFIG_SCROLL_NO_SCROLL
@@ -125,12 +125,12 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *termcmd[] = { "kitty", NULL };
-static const char *menucmd[] = { "bemenu-run", NULL };
+static const char *termcmd[]    = { "kitty", NULL };
+static const char *menucmd[]    = { "bemenu-run", NULL };
 static const char *browsercmd[] = { "firefox", NULL };
 
 static const Arg screenshot = SHCMD("grim -l 1 -g \"$(slurp)\" - | tee \"/home/fiend/media/screenshots/$(date +'%F_%T').png\" | wl-copy");
-static const Arg volumeup = SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +10%");
+static const Arg volumeup   = SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +10%");
 static const Arg volumedown = SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -10%");
 
 static const Key keys[] = {
@@ -161,15 +161,15 @@ static const Key keys[] = {
     { MODKEY,                    XKB_KEY_bracketright,  focusmon,           {.i = WLR_DIRECTION_RIGHT} },
     { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_braceleft,     tagmon,             {.i = WLR_DIRECTION_LEFT} },
     { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_braceright,    tagmon,             {.i = WLR_DIRECTION_RIGHT} },
-    TAGKEYS(                 XKB_KEY_1,         XKB_KEY_exclam,         0),
-    TAGKEYS(                 XKB_KEY_2,         XKB_KEY_at,             1),
-    TAGKEYS(                 XKB_KEY_3,         XKB_KEY_numbersign,     2),
-    TAGKEYS(                 XKB_KEY_4,         XKB_KEY_dollar,         3),
-    TAGKEYS(                 XKB_KEY_5,         XKB_KEY_percent,        4),
-    TAGKEYS(                 XKB_KEY_6,         XKB_KEY_asciicircum,    5),
-    TAGKEYS(                 XKB_KEY_7,         XKB_KEY_ampersand,      6),
-    TAGKEYS(                 XKB_KEY_8,         XKB_KEY_asterisk,       7),
-    TAGKEYS(                 XKB_KEY_9,         XKB_KEY_parenleft,      8),
+    TAGKEYS(                     XKB_KEY_1,             XKB_KEY_exclam,         0),
+    TAGKEYS(                     XKB_KEY_2,             XKB_KEY_at,             1),
+    TAGKEYS(                     XKB_KEY_3,             XKB_KEY_numbersign,     2),
+    TAGKEYS(                     XKB_KEY_4,             XKB_KEY_dollar,         3),
+    TAGKEYS(                     XKB_KEY_5,             XKB_KEY_percent,        4),
+    TAGKEYS(                     XKB_KEY_6,             XKB_KEY_asciicircum,    5),
+    TAGKEYS(                     XKB_KEY_7,             XKB_KEY_ampersand,      6),
+    TAGKEYS(                     XKB_KEY_8,             XKB_KEY_asterisk,       7),
+    TAGKEYS(                     XKB_KEY_9,             XKB_KEY_parenleft,      8),
     { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Q,             quit,               {0} },
 
     /* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
