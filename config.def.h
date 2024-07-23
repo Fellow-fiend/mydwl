@@ -20,7 +20,6 @@ static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You ca
 /* logging */
 static int log_level = WLR_ERROR;
 
-<<<<<<< HEAD
 /* Autostart */
 static const char *const autostart[] = {
     "mpvpaper", "*", "-f", "-o", "loop", "/home/fiend/media/wallpapers/ezgif-1-b087d0d036.gif", NULL,
@@ -28,9 +27,7 @@ static const char *const autostart[] = {
     NULL // terminate
 };
 
-=======
 /* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
->>>>>>> ea6a4501213e73119c4f17c05d7122fcbb9bfd0d
 static const Rule rules[] = {
     /* app_id             title       tags mask     isfloating   monitor */
     /* examples: */
