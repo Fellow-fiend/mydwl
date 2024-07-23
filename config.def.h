@@ -20,6 +20,7 @@ static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You ca
 /* logging */
 static int log_level = WLR_ERROR;
 
+<<<<<<< HEAD
 /* Autostart */
 static const char *const autostart[] = {
     "mpvpaper", "*", "-f", "-o", "loop", "/home/fiend/media/wallpapers/ezgif-1-b087d0d036.gif", NULL,
@@ -27,6 +28,9 @@ static const char *const autostart[] = {
     NULL // terminate
 };
 
+=======
+/* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
+>>>>>>> ea6a4501213e73119c4f17c05d7122fcbb9bfd0d
 static const Rule rules[] = {
     /* app_id             title       tags mask     isfloating   monitor */
     /* examples: */
@@ -44,8 +48,10 @@ static const Layout layouts[] = {
 };
 
 /* monitors */
-/* (x=-1, y=-1) is reserved as an "autoconfigure" monitor position indicator */
-/* WARNING: negative values other than (-1, -1) cause problems with xwayland clients' menus */
+/* (x=-1, y=-1) is reserved as an "autoconfigure" monitor position indicator
+ * WARNING: negative values other than (-1, -1) cause problems with Xwayland clients
+ * https://gitlab.freedesktop.org/xorg/xserver/-/issues/899
+*/
 /* NOTE: ALWAYS add a fallback rule, even if you are completely sure it won't be used */
 static const MonitorRule monrules[] = {
     /* name       mfact  nmaster scale layout       rotate/reflect                x    y */

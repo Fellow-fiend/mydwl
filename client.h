@@ -350,7 +350,7 @@ client_set_size(Client *c, uint32_t width, uint32_t height)
 #ifdef XWAYLAND
     if (client_is_x11(c)) {
         wlr_xwayland_surface_configure(c->surface.xwayland,
-                c->geom.x, c->geom.y, width, height);
+                c->geom.x + c->bw, c->geom.y + c->bw, width, height);
         return 0;
     }
 #endif
@@ -391,8 +391,8 @@ client_wants_focus(Client *c)
 {
 #ifdef XWAYLAND
     return client_is_unmanaged(c)
-        && wlr_xwayland_or_surface_wants_focus(c->surface.xwayland)
-        && wlr_xwayland_icccm_input_model(c->surface.xwayland) != WLR_ICCCM_INPUT_MODEL_NONE;
+        && wlr_xwayland_surface_override_redirect_wants_focus(c->surface.xwayland)
+        && wlr_xwayland_surface_icccm_input_model(c->surface.xwayland) != WLR_ICCCM_INPUT_MODEL_NONE;
 #endif
     return 0;
 }

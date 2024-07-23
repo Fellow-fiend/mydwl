@@ -1,4 +1,4 @@
-_VERSION = 0.5
+_VERSION = 0.8-dev
 VERSION  = `git describe --tags --dirty 2>/dev/null || echo $(_VERSION)`
 
 PKG_CONFIG = pkg-config
@@ -13,3 +13,5 @@ XLIBS =
 # Uncomment to build XWayland support
 XWAYLAND = -DXWAYLAND
 XLIBS = xcb xcb-icccm
+
+CC = gcc
