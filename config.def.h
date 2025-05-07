@@ -7,12 +7,13 @@
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
 static const unsigned int borderpx         = 1;  /* border pixel of windows */
-static const float rootcolor[]             = COLOR(0x222222ff);
-static const float bordercolor[]           = COLOR(0x444444ff);
-static const float focuscolor[]            = COLOR(0x005577ff);
-static const float urgentcolor[]           = COLOR(0xff0000ff);
+static const float rootcolor[]             = COLOR(0x00000000);
+static const float bordercolor[]           = COLOR(0x29394fff);
+static const float focuscolor[]            = COLOR(0x3c5372ff);
+static const float urgentcolor[]           = COLOR(0x00000000);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
 static const float fullscreen_bg[]         = {0.1f, 0.1f, 0.1f, 1.0f}; /* You can also use glsl colors */
+static const char kblayout_file[]          = "/tmp/dwl-kblayout";
 
 /* tagging - TAGCOUNT must be no greater than 31 */
 #define TAGCOUNT (9)
@@ -22,18 +23,30 @@ static int log_level = WLR_ERROR;
 
 /* Autostart */
 static const char *const autostart[] = {
-    "mpvpaper", "*", "-f", "-o", "loop", "/home/fiend/media/wallpapers/ezgif-1-b087d0d036.gif", NULL,
+    "waybar", NULL,
+    "wpaperd", "-d", NULL,
+    // "mpvpaper", "*", "-f", "-o", "loop", "/home/fiend/media/wallpapers/ezgif-1-b087d0d036.gif", NULL,
     "kitty", NULL, // terminal
+    "dropbox", NULL, // dropbox cloud
+    "eval", "`ssh-agent -s`", NULL,
+    "ssh-add", "/home/fiend/.ssh/github_full_access_ed25519", NULL,
+    "ssh-add", "/home/fiend/.ssh/nl_srv", NULL,
     NULL // terminate
+};
+
+static const char *const env[] = {
+    "QT_QPA_PLATFORM", "wayland",
+    "XDG_CURRENT_DESKTOP", "wlr",
 };
 
 /* NOTE: ALWAYS keep a rule declared even if you don't use rules (e.g leave at least one example) */
 static const Rule rules[] = {
     /* app_id             title       tags mask     isfloating   monitor */
     /* examples: */
-    { "firefox",            NULL,       1 << 1,       0,           -1 }, /* Start on ONLY tag "2" */
-    { "telegram-desktop",   NULL,       1 << 2,       0,           -1 }, /* Start on ONLY tag "3" */
-    { "keepassxc",          NULL,       1 << 3,       0,           -1 }, /* Start on ONLY tag "4" */
+    { "firefox",                NULL,       1 << 1,       0,           -1 }, /* Start on ONLY tag "2" */
+    { "google-chrome-stable",   NULL,       1 << 1,       0,           -1 }, /* Start on ONLY tag "2" */
+    { "telegram-desktop",       NULL,       1 << 2,       0,           -1 }, /* Start on ONLY tag "3" */
+    { "keepassxc",              NULL,       1 << 3,       0,           -1 }, /* Start on ONLY tag "4" */
 };
 
 /* layout(s) */
@@ -48,7 +61,7 @@ static const Layout layouts[] = {
 /* (x=-1, y=-1) is reserved as an "autoconfigure" monitor position indicator
  * WARNING: negative values other than (-1, -1) cause problems with Xwayland clients
  * https://gitlab.freedesktop.org/xorg/xserver/-/issues/899
-*/
+ */
 /* NOTE: ALWAYS add a fallback rule, even if you are completely sure it won't be used */
 static const MonitorRule monrules[] = {
     /* name       mfact  nmaster scale layout       rotate/reflect                x    y */
@@ -129,10 +142,29 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 
 /* commands */
 static const char *termcmd[]    = { "kitty", NULL };
-static const char *menucmd[]    = { "bemenu-run", NULL };
+static const char *menucmd[]    = { "bemenu-run",
+                                    "-C", "-T", "--single-instance",
+                                    "-l", "10", "--scrollbar", "autohide",
+                                    "-c", "-I", "--fixed-height", "-R", "10", "-M", "400",
+                                    "-w", "--binding", "vim", "--vim-esc-exits",
+                                    "-p", "run",
+                                    "--fb", "#212e3f",
+                                    "--ff", "#d6d6d7",
+                                    "--nb", "#212e3f",
+                                    "--nf", "#d6d6d7",
+                                    "--tb", "#212e3f",
+                                    "--hb", "#212e3f",
+                                    "--tf", "#c94f6d",
+                                    "--hf", "#86abdc",
+                                    "--af", "#d6d6d7",
+                                    "--ab", "#212e3f",
+                                    "--scb", "#212e3f",
+                                    "--scf", "#3c5372",
+                                    NULL };
 static const char *browsercmd[] = { "firefox", NULL };
 
 static const Arg screenshot = SHCMD("grim -l 1 -g \"$(slurp)\" - | tee \"/home/fiend/media/screenshots/$(date +'%F_%T').png\" | wl-copy");
+static const Arg colorpick = SHCMD("grim -g \"$(slurp -p)\" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | wl-copy");
 static const Arg volumeup   = SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +10%");
 static const Arg volumedown = SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -10%");
 
@@ -142,9 +174,11 @@ static const Key keys[] = {
     { MODKEY,                    XKB_KEY_p,             spawn,              {.v = menucmd} },
     { MODKEY,                    XKB_KEY_q,             spawn,              {.v = termcmd} },
     { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_F,             spawn,              {.v = browsercmd} },
+    { MODKEY,                    XKB_KEY_b,             togglebar,          {0} },
     { MODKEY,                    XKB_KEY_z,             spawn,              volumedown },
     { MODKEY,                    XKB_KEY_x,             spawn,              volumeup },
     { MODKEY,                    XKB_KEY_s,             spawn,              screenshot },
+    { MODKEY,                    XKB_KEY_c,             spawn,              colorpick },
     { MODKEY,                    XKB_KEY_j,             focusstack,         {.i = +1} },
     { MODKEY,                    XKB_KEY_k,             focusstack,         {.i = -1} },
     { MODKEY,                    XKB_KEY_h,             setmfact,           {.f = -0.05f} },
